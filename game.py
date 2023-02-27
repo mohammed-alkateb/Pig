@@ -1,11 +1,15 @@
+from typing import List
+
 from player import Player
 from ui import UI
 from dice_hand import Dice_hand
 import sys
+import os
+
 
 class Game:
     def __init__(self):
-        self.__players = []
+        self.__players: List[Player] = []
         self.ui = UI()
         self.threshold = 0
         self.turn = True
@@ -46,20 +50,33 @@ class Game:
     def update_player_info(self):
         pass
 
+    def end_turn(self, dice_hand):
+        self.turn = not self.turn
+        self.turn_looping = False
+        dice_hand.reset_values()
+
     def match_loop(self, action, dice_hand, player_index):
+        player = self.__players[player_index]
         if action == 1:
-            if dice_hand.get_multiple_cast() == 1:
+            cast = dice_hand.get_multiple_cast()
+            if cast == 1:
                 print("A 1 was rolled\n")
-                self.__players[player_index].reset_score()
-                self.turn = not self.turn
-                self.turn_looping = False
+                player.reset_score()
+                self.end_turn(dice_hand)
             else:
-                print(f"You've got {dice_hand.get_multiple_cast()}")
-                self.__players[player_index].increase_score(dice_hand.get_multiple_cast())
+                print(f"You've got {cast}")
         elif action == 2:
-            self.turn = not self.turn
-            self.turn_looping = False
+            player.increase_score(dice_hand.get_total_values())
+            print(f"{player.name}'s score: {player.get_score()}\n")
+            self.end_turn(dice_hand)
         elif action == 3:
+            new_name = str(input("Enter the new name: "))
+            player.name = new_name
+        elif action == 4:
+            lambda: os.system('cls')
+            self.__players.clear()
+            self.game_loop()
+        elif action == 5:
             sys.exit()
         else:
             raise Exception("Invalid input!")
@@ -70,17 +87,20 @@ class Game:
         while self.turn_looping:
             player_action = int(input("1. Roll a die\n"
                                       "2. Hold\n"
-                                      "3. Quit\n "))
+                                      "3. Rename player\n"
+                                      "4. Restart\n"
+                                      "5. Quit\n"))
             self.match_loop(player_action, dice_hand, player_index)
 
     def one_to_one(self):
-        dice_hand = Dice_hand()
         self.threshold = int(input("Assign a threshold: "))
         while not self.__won:
             if self.turn:
+                dice_hand = Dice_hand()
                 player_index = 0
                 self.turn_shift(player_index, dice_hand)
             elif not self.turn:
+                dice_hand = Dice_hand()
                 player_index = 1
                 self.turn_shift(player_index, dice_hand)
 

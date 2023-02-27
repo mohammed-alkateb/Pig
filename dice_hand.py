@@ -8,6 +8,9 @@ class Dice_hand:
         self.__dice_values: List[int] = []
         self.__total_values = 0
 
+    def get_total_values(self):
+        return self.__total_values
+
     def get_multiple_cast(self) -> int:
         cast = self.__dice_object.get_dice_cast()
         if cast == 1:
@@ -18,3 +21,6 @@ class Dice_hand:
             self.__total_values += cast
         return cast
 
+    def reset_values(self):
+        self.__dice_values: List[int] = []
+        self.__total_values = 0

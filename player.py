@@ -8,3 +8,6 @@ class Player:
 
     def reset_score(self):
         self.__score = 0
+
+    def get_score(self):
+        return self.__score

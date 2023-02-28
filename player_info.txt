@@ -1,3 +1,4 @@
-Player name,Games played,Total score
-mohammed,0,0
-ahmad,0,0
+Player name,High score
+mohammed,0
+ahmad,0
+samer,0

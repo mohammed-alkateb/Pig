@@ -48,21 +48,20 @@ class Game:
                     self.register_new_player(player)
 
     def update_player_info(self, update_name: bool, current_name, new_name, high_score):
-        if update_name:
-            with open('player_info.txt', 'r') as file:
-                lines = file.readlines()
-            for i, line in enumerate(lines):
-                if current_name in line:
-                    if update_name:
-                        lines[i] = line.replace(current_name, new_name)
+        with open('player_info.txt', 'r') as file:
+            lines = file.readlines()
+        for i, line in enumerate(lines):
+            if current_name in line:
+                if update_name:
+                    lines[i] = line.replace(current_name, new_name)
+                    break
+                else:
+                    old_score = lines[i].rstrip().split(",")[1]
+                    if high_score > int(old_score):
+                        lines[i] = line.replace(old_score, str(high_score))
                         break
-                    else:
-                        old_score = int(lines[i].rstrip().split(",")[1])
-                        if high_score > old_score:
-                            lines[i] = line.replace(old_score, high_score)
-                            break
-            with open('player_info.txt', 'w') as file:
-                file.writelines(lines)
+        with open('player_info.txt', 'w') as file:
+            file.writelines(lines)
 
     def end_turn(self, dice_hand):
         self.turn = not self.turn

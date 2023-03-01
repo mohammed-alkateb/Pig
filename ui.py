@@ -9,3 +9,7 @@ class UI:
               "If the player rolls any other number, it is added to their turn total and the player's turn continues.\n"
               "If a player chooses to 'hold', their turn total is added to their score, and it becomes the next player's turn. "
               "\n\nThe first player to score the threshold or more points wins.")
+
+    def display_info(self):
+        print("Player name, Played Matches, Total wins,"
+              " Total losses, High score")

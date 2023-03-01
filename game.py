@@ -15,6 +15,7 @@ class Game:
         self.turn = True
         self.turn_looping = True
         self.__won = False
+        self.file_name = "player_info.txt"
 
     def matchmaking(self):
         while True:
@@ -31,13 +32,13 @@ class Game:
                 print("Invalid input. Please enter a valid value.")
 
     def register_new_player(self, new_player):
-        with open('player_info.txt', 'a') as file:
+        with open(self.file_name, 'a') as file:
             file.write(f"{new_player.name},0,0,0,0\n")
             print(f"New player with the name '{new_player.name}' registered")
 
     def check_player_info(self):
         for player in self.__players:
-            with open('player_info.txt', 'r') as file:
+            with open(self.file_name, 'r') as file:
                 found_player = False
                 for line in file:
                     name_in_log = line.rstrip().split(",")[0]
@@ -48,9 +49,11 @@ class Game:
                     self.register_new_player(player)
 
     def update_player_info(self, update_name, current_name, new_name, high_score, loser_name):
-        with open('player_info.txt', 'r') as file:
+        with open(self.file_name, 'r') as file:
             lines = file.readlines()
-
+        if not update_name and loser_name != "":
+            print("Player name, Played Matches, Total wins,"
+                  " Total losses, High score")
         for i, line in enumerate(lines):
             fields = line.rstrip().split(",")
             name = fields[0]
@@ -61,24 +64,21 @@ class Game:
 
             if current_name == name:
                 if update_name:
-                    line = f"{new_name},{matches_played},{total_wins}," \
-                           f"{total_losses},{old_high_score}\n"
+                    lines[i] = f"{new_name},{matches_played},{total_wins}," \
+                               f"{total_losses},{old_high_score}\n"
                 else:
                     if high_score > int(old_high_score):
-                        line = f"{name},{str(int(matches_played) + 1)},{str(int(total_wins) + 1)}," \
-                               f"{total_losses},{high_score}\n"
+                        lines[i] = f"{name},{str(int(matches_played) + 1)},{str(int(total_wins) + 1)}," \
+                                   f"{total_losses},{high_score}\n"
                     else:
-                        line = f"{name},{str(int(matches_played) + 1)},{str(int(total_wins) + 1)}," \
-                               f"{total_losses},{old_high_score}\n"
+                        lines[i] = f"{name},{str(int(matches_played) + 1)},{str(int(total_wins) + 1)}," \
+                                   f"{total_losses},{old_high_score}\n"
+                    print(lines[i], end="")
             elif loser_name == name and not update_name:
-                line = f"{name},{str(int(matches_played) + 1)},{total_wins}," \
-                       f"{str(int(total_losses) + 1)},{old_high_score}\n"
-            if not update_name and loser_name != "":
-                print("Player name, Played Matches, Total wins,"
-                      " Total losses, High score\n")
-                print(line, end="")
-            lines[i] = line
-        with open('player_info.txt', 'w') as file:
+                lines[i] = f"{name},{str(int(matches_played) + 1)},{total_wins}," \
+                           f"{str(int(total_losses) + 1)},{old_high_score}\n"
+                print(lines[i], end="")
+        with open(self.file_name, 'w') as file:
             file.writelines(lines)
 
     def end_turn(self, dice_hand):

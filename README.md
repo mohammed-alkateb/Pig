@@ -1,5 +1,14 @@
-# Pig
-Pig is a simple dice game
-# Authors
-Shuayb Warsame & Mohammed-alkateb
+## Project Name
+
+## Description
+
+## Getting Started
+
+## How to Play
+
+## Examples
+
+## Contributing
+
+## Acknowledgements
 

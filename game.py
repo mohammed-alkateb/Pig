@@ -159,9 +159,16 @@ class Game:
                 player_index = 1
                 self.turn_shift(player_index, dice_hand)
 
-    def vs_machine(self, level):
+    def one_vs_machine(self, level):
         if level == 0:
-            pass
+            self.threshold = int(input("Assign a threshold: "))
+            while not self.__won:
+                if self.turn:
+                    dice_hand = Dice_hand()
+                    player_index = 0
+                    self.turn_shift(player_index, dice_hand)
+                elif not self.turn:
+                    pass # Machine's turn
         if level == 1:
             pass
 
@@ -173,7 +180,7 @@ class Game:
                 level = int(input("Easy level: 0\nHard level: 1\n"))
                 if level == 0 or level == 1:
                     break
-            self.vs_machine(level)
+            self.one_vs_machine(level)
 
     def game_loop(self):
         self.matchmaking()

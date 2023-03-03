@@ -1,5 +1,5 @@
-mohammed,6,5,1,10
-ahmad,7,1,6,11
+mohammed,8,6,2,10
+ahmad,9,2,7,11
 samer,3,2,6,1
 omar,2,2,0,6
 ali,2,0,2,0

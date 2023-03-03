@@ -98,6 +98,8 @@ class Game:
             loser = self.__players[0]
         if winner.get_score() >= self.threshold:
             print(f"The winner is {winner.name}")
+            self.__high_score_list[player_index].add_high_score(winner.get_score())
+            print("Winner high score list: " + self.__high_score_list[player_index].get_high_scores())
             self.update_player_info(False, winner.name, None, winner.get_score(), loser.name)
             sys.exit()
 
@@ -145,7 +147,7 @@ class Game:
                                       "6. Quit\n"))
             self.match_loop(player_action, dice_hand, player_index, histogram)
 
-    def one_to_one(self):
+    def one_vs_one(self):
         self.threshold = int(input("Assign a threshold: "))
         while not self.__won:
             if self.turn:
@@ -157,14 +159,21 @@ class Game:
                 player_index = 1
                 self.turn_shift(player_index, dice_hand)
 
-    def one_to_machine(self):
-        pass
+    def vs_machine(self, level):
+        if level == 0:
+            pass
+        if level == 1:
+            pass
 
     def begin(self):
         if len(self.__players) > 1:
-            self.one_to_one()
+            self.one_vs_one()
         elif len(self.__players) == 1:
-            self.one_to_machine()
+            while True:
+                level = int(input("Easy level: 0\nHard level: 1\n"))
+                if level == 0 or level == 1:
+                    break
+            self.vs_machine(level)
 
     def game_loop(self):
         self.matchmaking()

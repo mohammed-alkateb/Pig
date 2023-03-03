@@ -9,5 +9,8 @@ class High_score:
         for score in self.__high_score_list:
             return score
 
-    def add_high_score(self, high_score):
-        self.__high_score_list.append(high_score)
+    def add_high_score(self, high_score: int) -> bool:
+        if not self.__high_score_list or high_score > max(self.__high_score_list):
+            self.__high_score_list.append(high_score)
+            return True
+        return False

@@ -39,6 +39,15 @@ Go to the game directory
 
 
 
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  <File> pytest
+```
+
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)

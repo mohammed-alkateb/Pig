@@ -7,6 +7,7 @@ from high_score import High_score
 from histogram import Histogram
 import sys
 import os
+import random
 
 
 class Game:
@@ -99,23 +100,27 @@ class Game:
         if winner.get_score() >= self.threshold:
             print(f"The winner is {winner.name}")
             self.__high_score_list[player_index].add_high_score(winner.get_score())
-            print("Winner high score list: " + self.__high_score_list[player_index].get_high_scores())
+            print("Winner high score list: " + str(self.__high_score_list[player_index].get_high_scores()))
             self.update_player_info(False, winner.name, None, winner.get_score(), loser.name)
             sys.exit()
+
+    def check_cast(self, histogram, player_index, dice_hand):
+        player = self.__players[player_index]
+        cast = dice_hand.get_multiple_cast()
+        if cast == 1:
+            print("A 1 was rolled\n")
+            player.reset_score()
+            self.end_turn(dice_hand)
+        else:
+            print(f"{player.name} have got {cast}")
+            player.increase_score(cast)
+            histogram.update(cast)
+            self.detect_winner(player_index)
 
     def match_loop(self, action, dice_hand, player_index, histogram):
         player = self.__players[player_index]
         if action == 1:
-            cast = dice_hand.get_multiple_cast()
-            if cast == 1:
-                print("A 1 was rolled\n")
-                player.reset_score()
-                self.end_turn(dice_hand)
-            else:
-                print(f"You've got {cast}")
-                player.increase_score(cast)
-                histogram.update(cast)
-                self.detect_winner(player_index)
+            self.check_cast(histogram, player_index, dice_hand)
         elif action == 2:
             print(f"{player.name}'s score: {player.get_score()}\n")
             self.end_turn(dice_hand)
@@ -147,6 +152,19 @@ class Game:
                                       "6. Quit\n"))
             self.match_loop(player_action, dice_hand, player_index, histogram)
 
+    def machine_turn(self, player_index, dice_hand):
+        histogram = self.__histograms[1]
+        player = self.__players[player_index]
+        self.turn_looping = True
+        print(f"It's machine's turn..")
+        while self.turn_looping:
+            random_action = random.randint(0,1)
+            if random_action == 0:
+                self.check_cast(histogram, player_index, dice_hand)
+            elif random_action == 1:
+                print(f"{player.name}'s score: {player.get_score()}\n")
+                self.end_turn(dice_hand)
+
     def one_vs_one(self):
         self.threshold = int(input("Assign a threshold: "))
         while not self.__won:
@@ -160,17 +178,22 @@ class Game:
                 self.turn_shift(player_index, dice_hand)
 
     def one_vs_machine(self, level):
-        if level == 0:
-            self.threshold = int(input("Assign a threshold: "))
-            while not self.__won:
-                if self.turn:
-                    dice_hand = Dice_hand()
-                    player_index = 0
-                    self.turn_shift(player_index, dice_hand)
-                elif not self.turn:
-                    pass # Machine's turn
-        if level == 1:
-            pass
+        self.threshold = int(input("Assign a threshold: "))
+        player = Player("Machine")
+        self.__players.append(player)
+        while not self.__won:
+            if self.turn:
+                dice_hand = Dice_hand()
+                player_index = 0
+                self.turn_shift(player_index, dice_hand)
+            elif not self.turn:
+                dice_hand = Dice_hand()
+                player_index = 1
+                self.__players[player_index].name = "Machine"
+                if level == 0:
+                    self.machine_turn(player_index, dice_hand)
+                if level == 1:
+                    pass
 
     def begin(self):
         if len(self.__players) > 1:

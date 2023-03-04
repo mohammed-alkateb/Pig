@@ -45,3 +45,10 @@ Start the server
 ```
 
 
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+This project is licensed under the terms of the MIT license.
+

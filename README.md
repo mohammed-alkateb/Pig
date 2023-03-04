@@ -21,28 +21,16 @@ For example, the first player, Donald, begins a turn with a roll of 5. Donald co
 
 ## ⚙️ Setup 
 
-Clone the project
+Clone the project using the web URL/HTTPS alternative
 
 ```bash
   git clone https://github.com/mohammed-alkateb/Pig.git
 ```
 
-Go to the project directory
+Clone the project using SSH alterative
 
 ```bash
-  cd my-project
-```
-
-Install dependencies
-
-```bash
-  npm install
-```
-
-Start the server
-
-```bash
-  npm run start
+  git clone git@github.com:mohammed-alkateb/Pig.git
 ```
 
 

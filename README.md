@@ -23,7 +23,7 @@ For example, the first player, Donald, begins a turn with a roll of 5. Donald co
 Clone the project
 
 ```bash
-  git clone https://https://github.com/mohammed-alkateb/Pig
+  git clone https://github.com/mohammed-alkateb/Pig.git
 ```
 
 Go to the project directory

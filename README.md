@@ -46,6 +46,7 @@ To run tests, run the following command
 ```bash
   <File> pytest
 ```
+![App Screenshot]()
 
 
 ## License

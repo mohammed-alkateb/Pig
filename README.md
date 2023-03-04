@@ -1,13 +1,13 @@
-# Pig (dice game)
+# 🎲 Pig (dice game)
 A simple dice game with two players. Each player repeatedly rolls a die until either a 1 is rolled or the player decides to "hold". The player who first scores 100 or more points wins.
 
 
-## Authors
+## 👨‍🎓 Authors
 - [@shuaybw](https://www.github.com/shuaybw)
 - [@mohammed-alkateb](https://www.github.com/mohammed-alkateb)
 
 
-## How to play
+## ⚙️ How to play
 
 Each turn, a player repeatedly rolls a die until either a 1 is rolled or the player decides to "hold":
 

@@ -32,6 +32,10 @@ Clone the project using SSH alterative
 ```bash
   git clone git@github.com:mohammed-alkateb/Pig.git
 ```
+Go to the game directory
+```bash
+  cd game.py
+```
 
 
 

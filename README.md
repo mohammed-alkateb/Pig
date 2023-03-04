@@ -39,7 +39,7 @@ Go to the game directory
 
 
 
-## Running Tests
+## ⚙️  Running Tests
 
 To run tests, run the following command
 

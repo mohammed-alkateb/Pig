@@ -46,7 +46,10 @@ To run tests, run the following command
 ```bash
   <File> pytest
 ```
-![App Screenshot]()
+Example of running test
+![App Screenshot](https://user-images.githubusercontent.com/92877244/222927770-de694b2e-cea9-4561-84e3-bf2557fa3c3a.png)
+
+
 
 
 ## License

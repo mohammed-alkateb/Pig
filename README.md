@@ -28,13 +28,20 @@ Clone the project using the web URL/HTTPS alternative
 ```
 
 Clone the project using SSH alterative
-
 ```bash
   git clone git@github.com:mohammed-alkateb/Pig.git
 ```
 Go to the game directory
 ```bash
   cd game.py
+```
+Install required dependencies
+```bash
+  pip instal <module name>
+```
+Run game
+```bash
+  Green run button
 ```
 
 
@@ -46,15 +53,19 @@ To run tests, run the following command
 ```bash
   <File> pytest
 ```
-Example of running test
+test run example
 ![App Screenshot](https://user-images.githubusercontent.com/92877244/222927770-de694b2e-cea9-4561-84e3-bf2557fa3c3a.png)
 
 
 
 
-## License
+## 💾 License
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
 This project is licensed under the terms of the MIT license.
+
+## UMl
+
+## Documentation
 

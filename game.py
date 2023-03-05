@@ -5,9 +5,10 @@ from ui import UI
 from dice_hand import Dice_hand
 from high_score import High_score
 from histogram import Histogram
+from intelligence import Intelligence
 import sys
 import os
-import random
+import csv
 
 
 class Game:
@@ -15,12 +16,14 @@ class Game:
         self.__players: List[Player] = []
         self.__high_score_list: List[High_score] = [High_score() for i in range(2)]
         self.__histograms: List[Histogram] = [Histogram() for i in range(2)]
+        self.__intelligence = None
         self.ui = UI()
         self.threshold = 0
         self.turn = True
         self.turn_looping = True
         self.__won = False
         self.FILE_NAME = "player_info.txt"
+        self.DATA_FILE = "dice_values.csv"
 
     def matchmaking(self):
         while True:
@@ -107,6 +110,9 @@ class Game:
     def check_cast(self, histogram, player_index, dice_hand):
         player = self.__players[player_index]
         cast = dice_hand.get_multiple_cast()
+        with open(self.DATA_FILE, mode='a', newline='') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerow([cast])
         if cast == 1:
             print("A 1 was rolled\n")
             player.reset_score()
@@ -152,21 +158,26 @@ class Game:
                                       "6. Quit\n"))
             self.match_loop(player_action, dice_hand, player_index, histogram)
 
-    def machine_turn(self, level, player_index, dice_hand):
+    def machine_turn(self, player_index, dice_hand):
         histogram = self.__histograms[1]
         player = self.__players[player_index]
         self.turn_looping = True
         print(f"It's machine's turn..")
         while self.turn_looping:
-            if level == 0:
-                random_action = random.randint(0,1)
-                if random_action == 0:
+            ai_level = self.__intelligence.get_ai_level()
+            ai_action = self.__intelligence.ai_action()
+            if ai_level == 0:
+                if ai_action == 0:
                     self.check_cast(histogram, player_index, dice_hand)
-                elif random_action == 1:
+                elif ai_action == 1:
                     print(f"{player.name}'s score: {player.get_score()}\n")
                     self.end_turn(dice_hand)
-            elif level == 1:
-                pass
+            elif ai_level == 1:
+                if ai_action != 1:
+                    self.check_cast(histogram, player_index, dice_hand)
+                else:
+                    print(f"{player.name}'s score: {player.get_score()}\n")
+                    self.end_turn(dice_hand)
 
     def one_vs_one(self):
         self.threshold = int(input("Assign a threshold: "))
@@ -180,7 +191,7 @@ class Game:
                 player_index = 1
                 self.turn_shift(player_index, dice_hand)
 
-    def one_vs_machine(self, level):
+    def one_vs_machine(self):
         self.threshold = int(input("Assign a threshold: "))
         player = Player("Machine")
         self.__players.append(player)
@@ -193,7 +204,7 @@ class Game:
                 dice_hand = Dice_hand()
                 player_index = 1
                 self.__players[player_index].name = "Machine"
-                self.machine_turn(level, player_index, dice_hand)
+                self.machine_turn(player_index, dice_hand)
 
     def begin(self):
         if len(self.__players) > 1:
@@ -201,7 +212,8 @@ class Game:
         elif len(self.__players) == 1:
             while True:
                 level = int(input("Easy level: 0\nHard level: 1\n"))
-                self.one_vs_machine(level)
+                self.__intelligence = Intelligence(level, self.DATA_FILE)
+                self.one_vs_machine()
 
     def game_loop(self):
         self.matchmaking()

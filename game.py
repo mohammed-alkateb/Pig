@@ -152,18 +152,21 @@ class Game:
                                       "6. Quit\n"))
             self.match_loop(player_action, dice_hand, player_index, histogram)
 
-    def machine_turn(self, player_index, dice_hand):
+    def machine_turn(self, level, player_index, dice_hand):
         histogram = self.__histograms[1]
         player = self.__players[player_index]
         self.turn_looping = True
         print(f"It's machine's turn..")
         while self.turn_looping:
-            random_action = random.randint(0,1)
-            if random_action == 0:
-                self.check_cast(histogram, player_index, dice_hand)
-            elif random_action == 1:
-                print(f"{player.name}'s score: {player.get_score()}\n")
-                self.end_turn(dice_hand)
+            if level == 0:
+                random_action = random.randint(0,1)
+                if random_action == 0:
+                    self.check_cast(histogram, player_index, dice_hand)
+                elif random_action == 1:
+                    print(f"{player.name}'s score: {player.get_score()}\n")
+                    self.end_turn(dice_hand)
+            elif level == 1:
+                pass
 
     def one_vs_one(self):
         self.threshold = int(input("Assign a threshold: "))
@@ -190,10 +193,7 @@ class Game:
                 dice_hand = Dice_hand()
                 player_index = 1
                 self.__players[player_index].name = "Machine"
-                if level == 0:
-                    self.machine_turn(player_index, dice_hand)
-                if level == 1:
-                    pass
+                self.machine_turn(level, player_index, dice_hand)
 
     def begin(self):
         if len(self.__players) > 1:
@@ -201,9 +201,7 @@ class Game:
         elif len(self.__players) == 1:
             while True:
                 level = int(input("Easy level: 0\nHard level: 1\n"))
-                if level == 0 or level == 1:
-                    break
-            self.one_vs_machine(level)
+                self.one_vs_machine(level)
 
     def game_loop(self):
         self.matchmaking()

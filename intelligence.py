@@ -3,10 +3,18 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 
 
+def load_data(filename):
+    data = np.loadtxt(filename, delimiter=',')
+    X = data.reshape(-1, 1)
+    y = data
+
+    return X, y
+
+
 class Intelligence:
     def __init__(self, ai_level, data_file):
         self.__random_action = random.randint(0,1)
-        self.X, self.y = self.load_data(data_file)
+        self.X, self.y = load_data(data_file)
         self.model = RandomForestRegressor(n_estimators=100, random_state=42)
         self.model.fit(self.X, self.y)
         self.DATA_FILE = data_file
@@ -15,13 +23,6 @@ class Intelligence:
             self.ai_level = ai_level
         else:
             self.ai_level = 0
-
-    def load_data(self, filename):
-        data = np.loadtxt(filename, delimiter=',')
-        X = data.reshape(-1, 1)
-        y = data
-
-        return X, y
 
     def get_ai_level(self):
         return self.ai_level

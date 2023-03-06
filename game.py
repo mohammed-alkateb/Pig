@@ -6,7 +6,6 @@ from high_score import High_score
 from histogram import Histogram
 from intelligence import Intelligence
 import sys
-import os
 import csv
 
 
@@ -103,7 +102,6 @@ class Game:
                 break
             elif play_again == "no":
                 sys.exit()
-                break
             else:
                 self.ui.invalid_input_exception()
 
@@ -163,7 +161,6 @@ class Game:
         elif action == 4:
             histogram.display()
         elif action == 5:
-            lambda: os.system('cls')
             self.restart_match()
         elif action == 6:
             sys.exit()
@@ -183,7 +180,7 @@ class Game:
                 if player_action.isdigit() and int(player_action) in range(1, 7):
                     break
                 else:
-                    self.console.print("It should contain only digits [1-6]\n", style="error")
+                    self.ui.only_digits_exception()
             self.match_loop(player_action, dice_hand, player_index, histogram)
 
     def machine_turn(self, player_index, dice_hand):

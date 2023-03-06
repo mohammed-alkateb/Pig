@@ -27,17 +27,20 @@ class Game:
 
     def matchmaking(self):
         while True:
-            try:
-                action = int(input("How many players would like to play? (max 2)\n"))
-                if action in range(1,3):
-                    for i in range(action):
-                        player = Player(str(input(f"Enter player {i+1} name: ").lower()))
-                        self.__players.append(player)
-                    break
-                else:
-                    raise Exception("Out of range")
-            except ValueError:
-                print("Invalid input. Please enter a valid value.")
+            action = int(input("How many players would like to play? (max 2)\n"))
+            if action in range(1, 3):
+                for i in range(action):
+                    while True:
+                        name = str(input(f"Enter player {i + 1} name: ").lower())
+                        if name.isalpha():
+                            player = Player(name)
+                            self.__players.append(player)
+                            break
+                        else:
+                            print("The name should contain only alphabet!\n")
+                break
+            else:
+                print("Out of range\n")
 
     def register_new_player(self, new_player):
         with open(self.FILE_NAME, 'a') as file:
@@ -71,7 +74,7 @@ class Game:
 
             if current_name == name:
                 if update_name:
-                    lines[i] = f"{new_name},{matches_played},{total_wins}," \
+                    lines[i] = f"{str(new_name)},{matches_played},{total_wins}," \
                                f"{total_losses},{old_high_score}\n"
                 else:
                     if high_score > int(old_high_score):
@@ -93,6 +96,18 @@ class Game:
         self.turn_looping = False
         dice_hand.reset_values()
 
+    def exit_confirmation(self):
+        play_again = input("Do you want to play again? [YES/NO]\n").lower()
+        while True:
+            if play_again == "yes":
+                self.restart_match()
+                break
+            elif play_again == "no":
+                sys.exit()
+                break
+            else:
+                print("Invalid input")
+
     def detect_winner(self, player_index):
         winner = self.__players[player_index]
         global loser
@@ -103,9 +118,9 @@ class Game:
         if winner.get_score() >= self.threshold:
             print(f"The winner is {winner.name}")
             self.__high_score_list[player_index].add_high_score(winner.get_score())
-            print("Winner high score list: " + str(self.__high_score_list[player_index].get_high_scores()))
+            print(f"Winner high score list: {self.__high_score_list[player_index].get_high_scores()}")
             self.update_player_info(False, winner.name, None, winner.get_score(), loser.name)
-            sys.exit()
+            self.exit_confirmation()
 
     def check_cast(self, histogram, player_index, dice_hand):
         player = self.__players[player_index]
@@ -123,23 +138,36 @@ class Game:
             histogram.update(cast)
             self.detect_winner(player_index)
 
-    def match_loop(self, action, dice_hand, player_index, histogram):
+    def restart_match(self):
+        for i in self.__players:
+            i.reset_score()
+        if self.__intelligence == None:
+            self.one_vs_one()
+        else:
+            self.one_vs_machine()
+
+    def match_loop(self, player_action, dice_hand, player_index, histogram):
         player = self.__players[player_index]
+        action = int(player_action)
         if action == 1:
             self.check_cast(histogram, player_index, dice_hand)
         elif action == 2:
             print(f"{player.name}'s score: {player.get_score()}\n")
             self.end_turn(dice_hand)
         elif action == 3:
-            new_name = str(input("Enter the new name: "))
-            self.update_player_info(True, player.name, new_name, None)
+            while True:
+                new_name = input("Enter the new name: ")
+                if new_name.isalpha():
+                    self.update_player_info(True, player.name, new_name.lower(), None, None)
+                    break
+                else:
+                    print("The name should contain only alphabet!\n")
             player.name = new_name
         elif action == 4:
             histogram.display()
         elif action == 5:
             lambda: os.system('cls')
-            self.__players.clear()
-            self.game_loop()
+            self.restart_match()
         elif action == 6:
             sys.exit()
         else:
@@ -150,12 +178,17 @@ class Game:
         self.turn_looping = True
         print(f"It's {self.__players[player_index].name}'s turn..")
         while self.turn_looping:
-            player_action = int(input("1. Roll a die\n"
-                                      "2. Hold\n"
-                                      "3. Rename player\n"
-                                      "4. Display Histogram\n"
-                                      "5. Restart\n"
-                                      "6. Quit\n"))
+            while True:
+                player_action = input("1. Roll a die\n"
+                                          "2. Hold\n"
+                                          "3. Rename player\n"
+                                          "4. Display Histogram\n"
+                                          "5. Restart\n"
+                                          "6. Quit\n")
+                if player_action.isdigit() and int(player_action) in range(1, 7):
+                    break
+                else:
+                    print("It should contain only digits [1-6]\n")
             self.match_loop(player_action, dice_hand, player_index, histogram)
 
     def machine_turn(self, player_index, dice_hand):
@@ -180,7 +213,13 @@ class Game:
                     self.end_turn(dice_hand)
 
     def one_vs_one(self):
-        self.threshold = int(input("Assign a threshold: "))
+        while True:
+            self.threshold = input("Assign a threshold: ")
+            if self.threshold.isdigit():
+                self.threshold = int(self.threshold)
+                break
+            else:
+                print("It should contain only digits\n")
         while not self.__won:
             if self.turn:
                 dice_hand = Dice_hand()

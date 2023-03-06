@@ -1,5 +1,4 @@
 from typing import List
-
 from player import Player
 from ui import UI
 from dice_hand import Dice_hand
@@ -37,15 +36,15 @@ class Game:
                             self.players.append(player)
                             break
                         else:
-                            print("The name should contain only alphabet!\n")
+                            self.ui.only_alphabet_exception()
                 break
             else:
-                print("Out of range\n")
+                self.ui.out_of_range_exception()
 
     def register_new_player(self, player):
         with open(self.GAME_LOG_FILE, 'a') as file:
             file.write(f"{player.name},0,0,0,0\n")
-            print(f"New player with the name '{player.name}' registered")
+            self.ui.player_registered(player.name)
 
     def check_player_info(self):
         for player in self.players:
@@ -54,7 +53,7 @@ class Game:
                 for line in file:
                     name_in_log = line.rstrip().split(",")[0]
                     if player.name == name_in_log:
-                        print(f"{player.name} has been confirmed!")
+                        self.ui.player_confirmed(player.name)
                         player_found = True
                 if not player_found:
                     self.register_new_player(player)
@@ -106,7 +105,7 @@ class Game:
                 sys.exit()
                 break
             else:
-                print("Invalid input")
+                self.ui.invalid_input_exception()
 
     def detect_winner(self, player_index):
         winner = self.players[player_index]
@@ -127,11 +126,11 @@ class Game:
             writer = csv.writer(csv_file)
             writer.writerow([cast])
         if cast == 1:
-            print("A 1 was rolled\n")
+            self.ui.one_was_rolled()
             player.reset_score()
             self.end_turn(dice_hand)
         else:
-            print(f"{player.name} have got {cast}")
+            self.ui.display_dice_cast(player.name, cast)
             player.increase_score(cast)
             histogram.update(cast)
             self.detect_winner(player_index)
@@ -159,7 +158,7 @@ class Game:
                     self.update_player_info(True, player.name, new_name.lower(), None, None)
                     break
                 else:
-                    print("The name should contain only alphabet!\n")
+                    self.ui.only_alphabet_exception()
             player.name = new_name
         elif action == 4:
             histogram.display()
@@ -184,7 +183,7 @@ class Game:
                 if player_action.isdigit() and int(player_action) in range(1, 7):
                     break
                 else:
-                    print("It should contain only digits [1-6]\n")
+                    self.console.print("It should contain only digits [1-6]\n", style="error")
             self.match_loop(player_action, dice_hand, player_index, histogram)
 
     def machine_turn(self, player_index, dice_hand):
@@ -215,7 +214,7 @@ class Game:
                 self.threshold = int(self.threshold)
                 break
             else:
-                print("It should contain only digits\n")
+                self.ui.only_digits_exception()
 
     def one_vs_one(self):
         self.select_threshold()

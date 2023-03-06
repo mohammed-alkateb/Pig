@@ -208,6 +208,7 @@ class Game:
                     self.end_turn(dice_hand)
 
     def select_threshold(self):
+        self.ui.progress_bar()
         while True:
             self.threshold = input("Assign a threshold: ")
             if self.threshold.isdigit():

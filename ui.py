@@ -1,6 +1,7 @@
 from rich.theme import Theme
 from rich.console import Console
-from rich.text import Text
+from rich.progress import track
+import time
 
 
 class UI:
@@ -9,8 +10,8 @@ class UI:
         self.console = Console(theme=self.custom_theme, force_terminal=True)
 
     def display_game_rules(self):
-        self.console.print("\nGame Rules\n__________\n"
-              "Each turn, a player repeatedly rolls a die until either a 1 is rolled or the player decides to 'hold':" +
+        self.console.print("\n\nGame Rules\n__________", style="dark_orange3")
+        self.console.print("Each turn, a player repeatedly rolls a die until either a 1 is rolled or the player decides to 'hold':" +
               "\nIf the player rolls a 1, they score nothing and it becomes the next player's turn.\n"
               "If the player rolls any other number, it is added to their turn total and the player's turn continues.\n"
               "If a player chooses to 'hold', their turn total is added to their score, and it becomes the next player's turn. "
@@ -43,3 +44,9 @@ class UI:
 
     def display_dice_cast(self, name, cast):
         self.console.print(f"{name} have got {cast}", style="green3")
+
+    def progress_bar(self):
+        for i in track(range(10), description="Processing..."):
+            print(f"working {i}")
+            time.sleep(0.5)
+        print()

@@ -1,4 +1,4 @@
-from dice import Dice
+
 from dice_hand import Dice_hand
 
 def test_get_total_values():

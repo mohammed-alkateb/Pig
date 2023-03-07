@@ -2,6 +2,8 @@
 import List, Player, UI, Dice_hand, High_score,
 Histogram, Intelligence, sys, and csv
 """
+import sys
+import csv
 from typing import List
 from player import Player
 from ui import UI
@@ -9,8 +11,6 @@ from dice_hand import Dice_hand
 from high_score import High_score
 from histogram import Histogram
 from intelligence import Intelligence
-import sys
-import csv
 
 
 class Game:
@@ -18,12 +18,13 @@ class Game:
     This class connects all classes to each other
     and here the game starts, ends, and restarts
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Constructor contains all instance variables such as
         players, high_score_list, histograms, intelligence,
         ui, threshold. turn, turn_looping, won, GAME_LOG_FILE,
         DATA_FILE
+        :return: None
         """
         self.players: List[Player] = []
         self.high_score_list: List[High_score] = [High_score() for i in range(2)]
@@ -41,6 +42,7 @@ class Game:
         """
         Matchmaking is the method where every player enters his name
         to be added to the player list
+        :return: None
         """
         while True:
             action = int(input("How many players would like to play? (max 2)\n"))
@@ -52,15 +54,12 @@ class Game:
                             player = Player(name)
                             self.players.append(player)
                             break
-                        else:
-                            self.ui.only_alphabet_exception()
                 break
-            else:
-                self.ui.out_of_range_exception()
 
     def register_new_player(self, player: Player) -> None:
         """
         register a new player that has no saved information in the game log
+        :return: None
         """
         with open(self.GAME_LOG_FILE, 'a') as file:
             file.write(f"{player.name},0,0,0,0\n")
@@ -70,6 +69,7 @@ class Game:
         """
         If the player is already registered gets a confirmation msg,
         otherwise, it'll be registered
+        :return: None
         """
         for player in self.players:
             with open(self.GAME_LOG_FILE, 'r') as file:
@@ -82,7 +82,10 @@ class Game:
                 if not player_found:
                     self.register_new_player(player)
 
-    def update_player_info(self, update_name: bool, current_name: str, new_name: str, high_score: int,
+    def update_player_info(self, update_name: bool,
+                           current_name: str,
+                           new_name: str,
+                           high_score: int,
                            loser_name: str) -> None:
         """
         Update the player information in the game log file.
@@ -174,7 +177,7 @@ class Game:
         :param histogram: Histogram object
         :param player_index:
         :param dice_hand:
-        :return:
+        :return: None
         """
         player = self.players[player_index]
         cast = dice_hand.get_multiple_cast()
@@ -193,14 +196,31 @@ class Game:
             self.detect_winner(player_index)
 
     def restart_match(self) -> None:
+        """
+        Reset player score and histogram, then restart the match
+        :return: None
+        """
         for player in self.players:
             player.reset_score()
+        for histogram in self.histograms:
+            histogram.reset()
         if self.__intelligence is None:
             self.one_vs_one()
         else:
             self.one_vs_machine()
 
-    def match_loop(self, player_action: int, dice_hand: Dice_hand, player_index: int, histogram: Histogram) -> None:
+    def match_loop(self, player_action: int, dice_hand: Dice_hand,
+                   player_index: int, histogram: Histogram) -> None:
+        """
+        The match loop represents the alternative game choices
+        roll a die, hold, rename player, display histogram,
+        restart, and quit during the match
+        :param player_action: player input/alternative choice
+        :param dice_hand: dice hand object
+        :param player_index: player index in the players list
+        :param histogram: the histogram object
+        :return: None
+        """
         player = self.players[player_index]
         action = int(player_action)
         if action == 1:
@@ -225,6 +245,12 @@ class Game:
             sys.exit()
 
     def turn_shift(self, player_index: int, dice_hand: Dice_hand) -> None:
+        """
+        The start point of player turn
+        :param player_index: player index in the players list
+        :param dice_hand: dice hand object
+        :return: None
+        """
         histogram = self.histograms[player_index]
         self.turn_looping = True
         print(f"It's {self.players[player_index].name}'s turn..")
@@ -243,6 +269,12 @@ class Game:
             self.match_loop(player_action, dice_hand, player_index, histogram)
 
     def machine_turn(self, player_index: int, dice_hand: Dice_hand) -> None:
+        """
+        Machine's turn playing according to the chosen ai level by the player
+        :param player_index: player index in the players list
+        :param dice_hand: dice hand object
+        :return: None
+        """
         histogram = self.histograms[1]
         player = self.players[player_index]
         self.turn_looping = True
@@ -264,16 +296,23 @@ class Game:
                     self.end_turn(dice_hand)
 
     def select_threshold(self) -> None:
+        """
+        select the threshold, which is the amount points
+        the players need to achieve in order to win
+        :return: None
+        """
         self.ui.progress_bar()
         while True:
             self.threshold = input("Assign a threshold: ")
             if self.threshold.isdigit():
                 self.threshold = int(self.threshold)
                 break
-            else:
-                self.ui.only_digits_exception()
 
     def one_vs_one(self) -> None:
+        """
+        The start point of one_vs_one game mode
+        :return: None
+        """
         self.select_threshold()
         while not self.__won:
             if self.turn:
@@ -286,6 +325,10 @@ class Game:
                 self.turn_shift(player_index, dice_hand)
 
     def one_vs_machine(self) -> None:
+        """
+        The starting point of one_vs_machine game mode
+        :return: None
+        """
         self.select_threshold()
         player = Player("Machine")
         self.players.append(player)
@@ -301,6 +344,10 @@ class Game:
                 self.machine_turn(player_index, dice_hand)
 
     def begin(self) -> None:
+        """
+        Selecting a game mode based on amount players
+        :return: None
+        """
         if len(self.players) > 1:
             self.one_vs_one()
         elif len(self.players) == 1:
@@ -311,6 +358,11 @@ class Game:
                 break
 
     def game_loop(self) -> None:
+        """
+        The game loop contains all main methods that
+        are responsible to process the game
+        :return: None
+        """
         self.matchmaking()
         self.check_player_info()
         self.ui.display_game_rules()
@@ -318,5 +370,8 @@ class Game:
 
 
 if __name__ == '__main__':
+    """
+    Starts and runs the game loop
+    """
     main = Game()
     main.game_loop()

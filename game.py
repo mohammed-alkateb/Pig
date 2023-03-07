@@ -4,6 +4,7 @@ Histogram, Intelligence, sys, and csv
 """
 import sys
 import csv
+import time
 from typing import List
 from player import Player
 from ui import UI
@@ -11,6 +12,14 @@ from dice_hand import Dice_hand
 from high_score import High_score
 from histogram import Histogram
 from intelligence import Intelligence
+from rich.progress import track
+
+
+def progress_bar():
+    for i in track(range(10), description="Processing..."):
+        print(f"working {i}")
+        time.sleep(0.5)
+    print()
 
 
 class Game:
@@ -301,7 +310,7 @@ class Game:
         the players need to achieve in order to win
         :return: None
         """
-        self.ui.progress_bar()
+        progress_bar()
         while True:
             self.threshold = input("Assign a threshold: ")
             if self.threshold.isdigit():

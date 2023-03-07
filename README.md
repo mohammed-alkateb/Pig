@@ -19,10 +19,6 @@ Each turn, a player repeatedly rolls a die until either a 1 is rolled or the pla
 For example, the first player, Donald, begins a turn with a roll of 5. Donald could hold and score 5 points, but chooses to roll again. Donald rolls a 2, and could hold with a turn total of 7 points, but chooses to roll again. Donald rolls a 1, and must end his turn without scoring. The next player, Alexis, rolls the sequence 4-5-3-5-6, after which she chooses to hold, and adds her turn total of 23 points to her score.
 
 
-## ⚠️ Requirements
-
-
-
 ## ⚙️ Setup 
 
 Clone the project using the web URL/HTTPS alternative
@@ -76,8 +72,4 @@ This project is licensed under the terms of the MIT license.
 ## UMl
 Graphviz
 pyreverse
-
-
-## Documentation
-asdhasdkjaskjfhasjdfhkasfhasf
 

@@ -7,6 +7,7 @@ jax,0,0,0,0
 ahmad,0,0,0,0
 shuayb,1,1,0,50
 None,1,1,0,100
+<<<<<<< HEAD
 Alice,12,4,8,200
 None,1,1,0,100
 None,0,0,0,0
@@ -33,3 +34,7 @@ test_player2,0,0,0,0
 test_player,0,0,0,0
 test_player1,0,0,0,0
 test player,0,0,0,0
+=======
+Alice,3,1,2,200
+John,2,1,1,100
+>>>>>>> 9fe3a3749a3fdf3c9845677ad27ef0fba4627a2e

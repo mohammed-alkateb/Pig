@@ -1,3 +1,7 @@
+"""
+import List, Player, UI, Dice_hand, High_score,
+Histogram, Intelligence, sys, and csv
+"""
 from typing import List
 from player import Player
 from ui import UI
@@ -10,7 +14,17 @@ import csv
 
 
 class Game:
+    """
+    This class connects all classes to each other
+    and here the game starts, ends, and restarts
+    """
     def __init__(self):
+        """
+        Constructor contains all instance variables such as
+        players, high_score_list, histograms, intelligence,
+        ui, threshold. turn, turn_looping, won, GAME_LOG_FILE,
+        DATA_FILE
+        """
         self.players: List[Player] = []
         self.high_score_list: List[High_score] = [High_score() for i in range(2)]
         self.histograms: List[Histogram] = [Histogram() for i in range(2)]
@@ -23,7 +37,11 @@ class Game:
         self.GAME_LOG_FILE = "player_info.txt"
         self.DATA_FILE = "dice_values.csv"
 
-    def matchmaking(self):
+    def matchmaking(self) -> None:
+        """
+        Matchmaking is the method where every player enters his name
+        to be added to the player list
+        """
         while True:
             action = int(input("How many players would like to play? (max 2)\n"))
             if action in range(1, 3):
@@ -40,12 +58,19 @@ class Game:
             else:
                 self.ui.out_of_range_exception()
 
-    def register_new_player(self, player):
+    def register_new_player(self, player: Player) -> None:
+        """
+        register a new player that has no saved information in the game log
+        """
         with open(self.GAME_LOG_FILE, 'a') as file:
             file.write(f"{player.name},0,0,0,0\n")
             self.ui.player_registered(player.name)
 
-    def check_player_info(self):
+    def check_player_info(self) -> None:
+        """
+        If the player is already registered gets a confirmation msg,
+        otherwise, it'll be registered
+        """
         for player in self.players:
             with open(self.GAME_LOG_FILE, 'r') as file:
                 player_found = False
@@ -57,7 +82,18 @@ class Game:
                 if not player_found:
                     self.register_new_player(player)
 
-    def update_player_info(self, update_name, current_name, new_name, high_score, loser_name):
+    def update_player_info(self, update_name: bool, current_name: str, new_name: str, high_score: int,
+                           loser_name: str) -> None:
+        """
+        Update the player information in the game log file.
+
+        :param update_name: A bool that indicates whether to update the player name or not.
+        :param current_name: The player's current name.
+        :param new_name: The name the player wants to change to.
+        :param high_score: The player's high score.
+        :param loser_name: The name of the loser, if applicable.
+        :return: None
+        """
         with open(self.GAME_LOG_FILE, 'r') as file:
             lines = file.readlines()
         if not update_name:
@@ -76,10 +112,12 @@ class Game:
                                f"{total_losses},{old_high_score}\n"
                 else:
                     if high_score > int(old_high_score):
-                        lines[i] = f"{name},{str(int(matches_played) + 1)},{str(int(total_wins) + 1)}," \
+                        lines[i] = f"{name},{str(int(matches_played) + 1)}," \
+                                   f"{str(int(total_wins) + 1)}," \
                                    f"{total_losses},{high_score}\n"
                     else:
-                        lines[i] = f"{name},{str(int(matches_played) + 1)},{str(int(total_wins) + 1)}," \
+                        lines[i] = f"{name},{str(int(matches_played) + 1)}," \
+                                   f"{str(int(total_wins) + 1)}," \
                                    f"{total_losses},{old_high_score}\n"
                     print(lines[i], end="")
             elif loser_name == name and not update_name:
@@ -89,12 +127,21 @@ class Game:
         with open(self.GAME_LOG_FILE, 'w') as file:
             file.writelines(lines)
 
-    def end_turn(self, dice_hand):
+    def end_turn(self, dice_hand: Dice_hand) -> None:
+        """
+        end player turn and reset the dice hand object
+        :param dice_hand: dice hand object
+        :return: None
+        """
         self.turn = not self.turn
         self.turn_looping = False
         dice_hand.reset_values()
 
-    def exit_confirmation(self):
+    def exit_confirmation(self) -> None:
+        """
+        Confirm that the player really wants to exit the game
+        :return: None
+        """
         play_again = input("Do you want to play again? [YES/NO]\n").lower()
         while True:
             if play_again == "yes":
@@ -105,7 +152,12 @@ class Game:
             else:
                 self.ui.invalid_input_exception()
 
-    def detect_winner(self, player_index):
+    def detect_winner(self, player_index: int) -> None:
+        """
+        Checks for winner and if it finds one the players results will be displayed
+        :param player_index: player object index in the players list
+        :return: None
+        """
         winner = self.players[player_index]
         loser = self.players[(player_index+1) % 2]
 
@@ -116,7 +168,14 @@ class Game:
             self.update_player_info(False, winner.name, None, winner.get_score(), loser.name)
             self.exit_confirmation()
 
-    def check_cast(self, histogram, player_index, dice_hand):
+    def check_cast(self, histogram: Histogram, player_index: int, dice_hand: Dice_hand) -> None:
+        """
+
+        :param histogram: Histogram object
+        :param player_index:
+        :param dice_hand:
+        :return:
+        """
         player = self.players[player_index]
         cast = dice_hand.get_multiple_cast()
 
@@ -133,7 +192,7 @@ class Game:
             histogram.update(cast)
             self.detect_winner(player_index)
 
-    def restart_match(self):
+    def restart_match(self) -> None:
         for player in self.players:
             player.reset_score()
         if self.__intelligence is None:
@@ -141,7 +200,7 @@ class Game:
         else:
             self.one_vs_machine()
 
-    def match_loop(self, player_action, dice_hand, player_index, histogram):
+    def match_loop(self, player_action: int, dice_hand: Dice_hand, player_index: int, histogram: Histogram) -> None:
         player = self.players[player_index]
         action = int(player_action)
         if action == 1:
@@ -165,7 +224,7 @@ class Game:
         elif action == 6:
             sys.exit()
 
-    def turn_shift(self, player_index, dice_hand):
+    def turn_shift(self, player_index: int, dice_hand: Dice_hand) -> None:
         histogram = self.histograms[player_index]
         self.turn_looping = True
         print(f"It's {self.players[player_index].name}'s turn..")
@@ -183,7 +242,7 @@ class Game:
                     self.ui.only_digits_exception()
             self.match_loop(player_action, dice_hand, player_index, histogram)
 
-    def machine_turn(self, player_index, dice_hand):
+    def machine_turn(self, player_index: int, dice_hand: Dice_hand) -> None:
         histogram = self.histograms[1]
         player = self.players[player_index]
         self.turn_looping = True
@@ -204,7 +263,7 @@ class Game:
                     print(f"{player.name}'s score: {player.get_score()}\n")
                     self.end_turn(dice_hand)
 
-    def select_threshold(self):
+    def select_threshold(self) -> None:
         self.ui.progress_bar()
         while True:
             self.threshold = input("Assign a threshold: ")
@@ -214,7 +273,7 @@ class Game:
             else:
                 self.ui.only_digits_exception()
 
-    def one_vs_one(self):
+    def one_vs_one(self) -> None:
         self.select_threshold()
         while not self.__won:
             if self.turn:
@@ -226,7 +285,7 @@ class Game:
                 player_index = 1
                 self.turn_shift(player_index, dice_hand)
 
-    def one_vs_machine(self):
+    def one_vs_machine(self) -> None:
         self.select_threshold()
         player = Player("Machine")
         self.players.append(player)
@@ -241,7 +300,7 @@ class Game:
                 self.players[player_index].name = "Machine"
                 self.machine_turn(player_index, dice_hand)
 
-    def begin(self):
+    def begin(self) -> None:
         if len(self.players) > 1:
             self.one_vs_one()
         elif len(self.players) == 1:
@@ -251,7 +310,7 @@ class Game:
                 self.one_vs_machine()
                 break
 
-    def game_loop(self):
+    def game_loop(self) -> None:
         self.matchmaking()
         self.check_player_info()
         self.ui.display_game_rules()

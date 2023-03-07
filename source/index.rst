@@ -6,10 +6,15 @@
 Welcome to Pig's documentation!
 ===============================
 
+Overview
+--------
+
+.. sectnum::
+.. sectnumdepth: 2
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
 
 
 Indices and tables

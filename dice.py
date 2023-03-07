@@ -9,9 +9,8 @@ class Dice:
 
     def __init__(self):
         """
-        It's a dice class constructor
+        constructor
         """
-        pass
 
     def get_dice_cast(self) -> int:
         """

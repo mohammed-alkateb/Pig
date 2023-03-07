@@ -1,21 +1,8 @@
 """
 import Theme, Console, track, time
 """
-import time
 from rich.theme import Theme
 from rich.console import Console
-from rich.progress import track
-
-
-def progress_bar() -> None:
-    """
-    process bar loading display
-    :return: None
-    """
-    for i in track(range(10), description="Processing..."):
-        print(f"working {i}")
-        time.sleep(0.5)
-    print()
 
 
 class UI:

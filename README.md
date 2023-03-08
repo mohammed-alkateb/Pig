@@ -76,12 +76,15 @@ pyreverse
 
 ## 🗎 Regenerate Documentation
 
+To install the package
 ```bash
   1. pip install sphinx
 ```
+Run the package
 ```bash
   2. sphinx-quickstart
 ```
+Regenerate a document file in HTML format
 ```bash
   3. make html
 ```

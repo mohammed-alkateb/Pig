@@ -73,3 +73,10 @@ This project is licensed under the terms of the MIT license.
 Graphviz
 pyreverse
 
+
+## 🗎 Regenerate Documentation
+
+```bash
+  pip install -U pytest
+```
+

@@ -40,8 +40,12 @@ class Game:
         :return: None
         """
         self.players: List[Player] = []
-        self.high_score_list: List[High_score] = [High_score() for i in range(2)]
-        self.histograms: List[Histogram] = [Histogram() for i in range(2)]
+        self.high_score_list: \
+            List[High_score] = \
+            [High_score() for i in range(2)]
+        self.histograms: \
+            List[Histogram] = \
+            [Histogram() for i in range(2)]
         self.__intelligence = None
         self.ui = UI()
         self.threshold = 0
@@ -53,7 +57,8 @@ class Game:
 
     def matchmaking(self) -> None:
         """
-        Matchmaking is the method where every player enters his name
+        Matchmaking is the method where
+        every player enters his name
         to be added to the player list
         :return: None
         """
@@ -179,9 +184,13 @@ class Game:
 
         if winner.get_score() >= self.threshold:
             print(f"The winner is {winner.name}")
-            self.high_score_list[player_index].add_high_score(winner.get_score())
-            print(f"Winner high score list: {self.high_score_list[player_index].get_high_scores()}")
-            self.update_player_info(False, winner.name, None, winner.get_score(), loser.name)
+            self.high_score_list[player_index].\
+                add_high_score(winner.get_score())
+            print(f"Winner high score list: "
+                  f"{self.high_score_list[player_index].get_high_scores()}")
+            self.update_player_info(False, winner.name,
+                                    None, winner.get_score(),
+                                    loser.name)
             self.exit_confirmation()
 
     def check_cast(self, histogram: Histogram, player_index: int, dice_hand: Dice_hand) -> None:

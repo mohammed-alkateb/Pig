@@ -15,7 +15,11 @@ from intelligence import Intelligence
 from rich.progress import track
 
 
-def progress_bar():
+def progress_bar() -> None:
+    """
+    Game loading Progress bar
+    :return: None
+    """
     for i in track(range(10), description="Processing..."):
         print(f"working {i}")
         time.sleep(0.5)
@@ -182,7 +186,13 @@ class Game:
 
     def check_cast(self, histogram: Histogram, player_index: int, dice_hand: Dice_hand) -> None:
         """
-
+        Write the new cast value in the data file
+        which the AI module train on.
+        if the cast value is one, we reset
+        player's score and end the turn
+        Otherwise, we increase the score,
+        add the new cast to the histogram
+        and check for a winner
         :param histogram: Histogram object
         :param player_index:
         :param dice_hand:
@@ -287,7 +297,7 @@ class Game:
         histogram = self.histograms[1]
         player = self.players[player_index]
         self.turn_looping = True
-        print(f"It's machine's turn..")
+        print("It's machine's turn..")
         while self.turn_looping:
             ai_level = self.__intelligence.get_ai_level()
             ai_action = self.__intelligence.ai_action()
@@ -379,8 +389,5 @@ class Game:
 
 
 if __name__ == '__main__':
-    """
-    Starts and runs the game loop
-    """
     main = Game()
     main.game_loop()

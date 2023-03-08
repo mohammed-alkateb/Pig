@@ -15,10 +15,10 @@ def load_data(filename) -> Tuple[np.ndarray, np.ndarray]:
     :return: numpy arrays -> x and y
     """
     data = np.loadtxt(filename, delimiter=',')
-    X = data.reshape(-1, 1)
-    y = data
+    arr_x = data.reshape(-1, 1)
+    arr_y = data
 
-    return X, y
+    return arr_x, arr_y
 
 
 def easy_level() -> int:
@@ -42,9 +42,9 @@ class Intelligence:
         :param ai_level: the level of machine's intelligence that the player wants to play against
         :param data_file: the name of the data file
         """
-        self.X, self.y = load_data(data_file)
+        self.arr_x, self.arr_y = load_data(data_file)
         self.model = RandomForestRegressor(n_estimators=100, random_state=42)
-        self.model.fit(self.X, self.y)
+        self.model.fit(self.arr_x, self.arr_y)
         self.DATA_FILE = data_file
 
         if ai_level <= 1:

@@ -77,6 +77,12 @@ pyreverse
 ## 🗎 Regenerate Documentation
 
 ```bash
-  pip install -U pytest
+  1. pip install sphinx
+```
+```bash
+  2. sphinx-quickstart
+```
+```bash
+  3. make html
 ```
 

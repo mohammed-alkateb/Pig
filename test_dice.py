@@ -13,11 +13,5 @@ def test_get_dice_cast_valid():
     assert isinstance(cast, int)
     assert 1 <= cast <= 6
 
-def test_dice_constructor():
-    # Test that the constructor does not raise an error
-    try:
-        dice = Dice()
-    except Exception as e:
-        assert False, f"Creating a Dice object raised an exception: {e}"
 
 

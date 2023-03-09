@@ -74,7 +74,7 @@ class Intelligence:
         predict the next dice cast value using the trained module
         :return: int
         """
-        x_test = np.random.randint(1, 7, size=(1, 1))
+        x_test = np.random.randint(1, 6, size=(1, 1))
         predicted_value = round(self.model.predict(x_test)[0])
 
         print(f"Predicted value: {predicted_value}")

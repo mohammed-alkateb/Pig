@@ -34,3 +34,4 @@ def test_reset_values():
     dice_hand = Dice_hand()
     dice_hand.reset_values()
     assert dice_hand.get_total_values() == 0
+

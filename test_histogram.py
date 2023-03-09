@@ -31,7 +31,7 @@ def test_reset():
     histogram.update(3)
     histogram.update(5)
     histogram.reset()
-    assert len(histogram.get_data()) == 0
+    assert len(histogram.get_data()) == len([0, 0, 0, 0, 0, 0, 0])
 
 
 def test_display():

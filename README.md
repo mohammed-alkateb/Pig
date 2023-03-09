@@ -90,6 +90,23 @@ Regenerate a document file in HTML format
 ```
 
 
-## 🎮 Gane Intelligence
+## 🎮 Game Intelligence
 
 We chose to implement two levels of automated enemy intelligence. The easy level is based on randomizing a number between 0 (Roll a die) and 1 (Hold). The hard level, on the other hand, uses the NumPy and Scikit-learn libraries. NumPy is used to load data from a file and return it as NumPy arrays. Scikit-learn is used to create a machine learning model for predicting the next dice roll value. In summary, in the hard level, the computer can predict the next dice roll value and make a decision based on whether to roll the dice or hold.
+
+### Code Implementation
+
+1. Fetch data (Previous dice cast values) from the file
+```bash
+  self.arr_x, self.arr_y = load_data(data_file)
+```
+2. A machine learning model using 100 decision trees with 42 as the seed value for predicting the next dice cast value based on the previous ones.
+```bash
+  self.model = RandomForestRegressor(n_estimators=100, random_state=42)
+  self.model.fit(self.arr_x, self.arr_y)
+```
+3. Finally, the next die value between 1 and 6 is predicted using the model created in the previous step.
+```bash
+  x_test = np.random.randint(1, 7, size=(1, 1))
+  predicted_value = round(self.model.predict(x_test)[0])
+```

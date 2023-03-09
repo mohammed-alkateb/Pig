@@ -22,15 +22,3 @@ def test_get_dice_cast_valid():
     cast = dice.get_dice_cast()
     assert isinstance(cast, int)
     assert 1 <= cast <= 6
-
-
-def test_dice_constructor():
-    """
-    Test that the constructor does
-    not raise an error
-    :return: None
-    """
-    try:
-        Dice()
-    except Exception as exp:
-        assert False, f"Creating a Dice object raised an exception: {exp}"

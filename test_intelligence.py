@@ -2,7 +2,6 @@
 
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
-
 from intelligence import Intelligence, easy_level
 
 
@@ -16,6 +15,18 @@ def test_ai_level():
     """
     intelligence = Intelligence(ai_level=1, data_file='dice_values.csv')
     assert intelligence.get_ai_level() == 1
+
+
+def test_ai_level_greater_than_1():
+    """
+    Creates a new Intelligence object with an
+    ai_level of 2 and a data file of
+    'dice_values.csv', and then checks that
+    the get_ai_level() method returns the
+    expected value of 0.
+    """
+    intelligence = Intelligence(ai_level=2, data_file='dice_values.csv')
+    assert intelligence.get_ai_level() == 0
 
 
 def test_easy_level():

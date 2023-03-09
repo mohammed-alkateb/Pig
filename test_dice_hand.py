@@ -15,14 +15,14 @@ def test_get_total_values():
 def test_get_multiple_cast():
     """
     This function creates a new Dice_hand
-    object, calls the get_multiple_cast method,
+    object, calls the get_multiple_cast method multiple times,
     and then checks that the resulting cast
     value is between 1 and 6.
     """
     dice_hand = Dice_hand()
-    cast = dice_hand.get_multiple_cast()
-    assert cast in [1, 2, 3, 4, 5, 6]
-
+    for i in range(10):  # call get_multiple_cast 10 times
+        cast = dice_hand.get_multiple_cast()
+        assert cast in [1, 2, 3, 4, 5, 6]
 
 def test_reset_values():
     """

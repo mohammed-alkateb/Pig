@@ -38,3 +38,5 @@ test player,0,0,0,0
 Alice,3,1,2,200
 John,2,1,1,100
 >>>>>>> 9fe3a3749a3fdf3c9845677ad27ef0fba4627a2e
+shu,0,0,0,0
+d,0,0,0,0

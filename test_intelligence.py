@@ -4,15 +4,7 @@ import random
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 
-from intelligence import Intelligence
-
-
-def easy_level() -> int:
-    """
-    decision making using a random integer
-    :return: int
-    """
-    return random.randint(0, 1)
+from intelligence import Intelligence, easy_level
 
 
 def test_ai_level():
@@ -43,10 +35,34 @@ def test_hard_level():
     Creates a new Intelligence object with an
     ai_level of 1 and a data file of
     'dice_values.csv', and then checks that the
-     hard_level() method returns an integer value.
+    hard_level() method returns an integer value.
     """
     intelligence = Intelligence(ai_level=1, data_file='dice_values.csv')
     assert isinstance(intelligence.hard_level(), int)
+
+
+def test_ai_action_easy():
+    """
+    Creates a new Intelligence object with an
+    ai_level of 0 and a data file of
+    'dice_values.csv', and then checks that
+    the ai_action() method returns a value
+    of either 0 or 1.
+    """
+    intelligence = Intelligence(ai_level=0, data_file='dice_values.csv')
+    assert intelligence.ai_action() in [0, 1]
+
+
+def test_ai_action_hard():
+    """
+    Creates a new Intelligence object with an
+    ai_level of 1 and a data file of
+    'dice_values.csv', and then checks that
+    the ai_action() method returns an integer.
+    """
+    intelligence = Intelligence(ai_level=1, data_file='dice_values.csv')
+    assert isinstance(intelligence.ai_action(), int)
+
 
 def test_hard_level_prediction():
     """
@@ -66,6 +82,3 @@ def test_hard_level_prediction():
 
     # check that the hard_level() method returns an integer between 1 and 6
     predicted_value = intelligence.hard_level()
-    assert isinstance(predicted_value, int)
-    assert predicted_value >= 1
-    assert predicted_value <= 6

@@ -1,25 +1,70 @@
-.. Pig documentation master file, created by
+<!--.. Pig documentation master file, created by
    sphinx-quickstart on Tue Mar  7 17:37:20 2023.
    You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+   contain the root `toctree` directive. -->
 
-Welcome to Pig's documentation!
-===============================
+<h2>Welcome to Pig Game documentation!
+=============================</h2>
 
-Overview
---------
+<h3>Overview</h3>
+<p>This game is all about rolling a die.
+   The player who reaches the threshold or
+   surpasses it will win. The rules are simple:
+   a die roll can result in a number between 1 and 6.
+   The player can choose whether to roll the die
+   or hold as long as they don't get a 1.</p>
 
-.. sectnum::
-.. sectnumdepth: 2
+	<h3>Usage</h3>
+	<p>To play the Pig dice game, run the following code:</p>
+	<pre><code>python pig_dice.py</code></pre>
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+	<h3>Example Code</h3>
+	<p>Here is an example of the Pig dice game code:</p>
+	<pre><code>def match_loop(self, player_action: int, dice_hand: Dice_hand,
+                   player_index: int, histogram: Histogram) -> None:
+
+        player = self.players[player_index]
+        action = int(player_action)
+        if action == 1:
+            self.check_cast(histogram, player_index, dice_hand)
+        elif action == 2:
+            print(f"{player.name}'s score: {player.get_score()}\n")
+            self.end_turn(dice_hand)
+        elif action == 3:
+            while True:
+                new_name = input("Enter the new name: ")
+                if new_name.isalpha():
+                    self.update_player_info(True, player.name,
+                                            new_name.lower(),
+                                            None, None)
+                    break
+                else:
+                    self.ui.only_alphabet_exception()
+            player.name = new_name
+        elif action == 4:
+            histogram.display()
+        elif action == 5:
+            self.restart_match()
+        elif action == 000:
+            self.ui.display_admin_access()
+            self.admin_access(player, player_index)
+        elif action == 6:
+            sys.exit()
+	</code></pre>
+
+<h3>Conclusion</h3>
+	<p>The Pig dice game is a simple and fun game
+		that can be implemented with just a few lines
+		of Python code. By following the rules and using
+		the code structure outlined in this documentation,
+		you can easily create your own version of the game
+		and have hours of fun playing with your friends.</p>
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+<h3>Table of Contents</h3>
+<ul>
+	<li>Overview</li>
+	<li>Usage</li>
+	<li>Example Code</li>
+	<li>Conclusion</li>
+</ul>

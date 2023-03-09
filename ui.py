@@ -102,3 +102,6 @@ class UI:
         :return: None
         """
         self.console.print(f"{name} have got {cast}", style="green3")
+
+    def display_admin_access(self):
+        self.console.print("ADMIN ACCESS!", style="error")

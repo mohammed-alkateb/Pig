@@ -79,7 +79,8 @@ class Game:
 
     def register_new_player(self, player: Player) -> None:
         """
-        register a new player that has no saved information in the game log
+        register a new player that has no
+        saved information in the game log
         :return: None
         """
         with open(self.GAME_LOG_FILE, 'a') as file:
@@ -88,8 +89,9 @@ class Game:
 
     def check_player_info(self) -> None:
         """
-        If the player is already registered gets a confirmation msg,
-        otherwise, it'll be registered
+        If the player is already registered
+        gets a confirmation msg. Otherwise,
+        it'll be registered
         :return: None
         """
         for player in self.players:
@@ -109,14 +111,20 @@ class Game:
                            high_score: int,
                            loser_name: str) -> None:
         """
-        Update the player information in the game log file.
+        Update the player information in the
+        game log file.
 
-        :param update_name: A bool that indicates whether
-        to update the player name or not.
-        :param current_name: The player's current name.
-        :param new_name: The name the player wants to change to.
-        :param high_score: The player's high score.
-        :param loser_name: The name of the loser, if applicable.
+        :param update_name: A bool that
+        indicates whether to update the
+        player name or not.
+        :param current_name: The player's
+        current name.
+        :param new_name: The name the
+        player wants to change to.
+        :param high_score: The player's
+        high score.
+        :param loser_name: The name of
+        the loser, if applicable.
         :return: None
         """
         with open(self.GAME_LOG_FILE, 'r') as file:
@@ -125,6 +133,8 @@ class Game:
             self.ui.display_info()
         for i, line in enumerate(lines):
             fields = line.rstrip().split(",")
+            if len(fields) < 2:
+                continue
             name = fields[0]
             matches_played = fields[1]
             total_wins = fields[2]
@@ -157,7 +167,8 @@ class Game:
 
     def end_turn(self, dice_hand: Dice_hand) -> None:
         """
-        end player turn and reset the dice hand object
+        end player turn and reset the
+        dice hand object
         :param dice_hand: dice hand object
         :return: None
         """
@@ -167,7 +178,8 @@ class Game:
 
     def exit_confirmation(self) -> None:
         """
-        Confirm that the player really wants to exit the game
+        Confirm that the player really
+        wants to exit the game
         :return: None
         """
         play_again = input("Do you want to play again? [YES/NO]\n").lower()
@@ -182,8 +194,9 @@ class Game:
 
     def detect_winner(self, player_index: int) -> None:
         """
-        Checks for winner and if it finds one the
-        players results will be displayed
+        Checks for winner and if it
+        finds one the players results
+        will be displayed
         :param player_index: player object index
         in the players list
         :return: None
@@ -236,7 +249,8 @@ class Game:
 
     def restart_match(self) -> None:
         """
-        Reset player score and histogram, then restart the match
+        Reset player score and histogram,
+        then restart the match
         :return: None
         """
         for player in self.players:
@@ -248,12 +262,29 @@ class Game:
         else:
             self.one_vs_machine()
 
+    def admin_access(self, player, player_index):
+        cheat_cmd = int(input("Cheating List:\n"
+                              "1. Win\n"
+                              "2. Increase Score\n"))
+        while True:
+            if cheat_cmd == 1:
+                player.increase_score(self.threshold)
+                self.detect_winner(player_index)
+                break
+            elif cheat_cmd == 2:
+                cheat_cmd = input("Increase Score: ")
+                if cheat_cmd.isdigit():
+                    player.increase_score(cheat_cmd)
+                break
+
     def match_loop(self, player_action: int, dice_hand: Dice_hand,
                    player_index: int, histogram: Histogram) -> None:
         """
-        The match loop represents the alternative game choices
-        roll a die, hold, rename player, display histogram,
-        restart, and quit during the match
+        The match loop represents the
+        alternative game choices roll
+        a die, hold, rename player,
+        display histogram, restart,
+        and quit during the match
         :param player_action: player input/alternative choice
         :param dice_hand: dice hand object
         :param player_index: player index in the players list
@@ -282,6 +313,9 @@ class Game:
             histogram.display()
         elif action == 5:
             self.restart_match()
+        elif action == 000:
+            self.ui.display_admin_access()
+            self.admin_access(player, player_index)
         elif action == 6:
             sys.exit()
 
@@ -304,8 +338,7 @@ class Game:
                                       "4. Display Histogram\n"
                                       "5. Restart\n"
                                       "6. Quit\n")
-                if player_action.isdigit() and \
-                        int(player_action) in range(1, 7):
+                if player_action.isdigit():
                     break
                 else:
                     self.ui.only_digits_exception()
@@ -313,8 +346,10 @@ class Game:
 
     def machine_turn(self, player_index: int, dice_hand: Dice_hand) -> None:
         """
-        Machine's turn playing according to the chosen ai level by the player
-        :param player_index: player index in the players list
+        Machine's turn playing according to
+        the chosen ai level by the player
+        :param player_index: player index
+        in the players list
         :param dice_hand: dice hand object
         :return: None
         """
@@ -340,8 +375,10 @@ class Game:
 
     def select_threshold(self) -> None:
         """
-        select the threshold, which is the amount points
-        the players need to achieve in order to win
+        select the threshold, which
+        is the amount points
+        the players need to achieve
+        in order to win
         :return: None
         """
         progress_bar()
@@ -353,7 +390,8 @@ class Game:
 
     def one_vs_one(self) -> None:
         """
-        The start point of one_vs_one game mode
+        The start point of one_vs_one
+        game mode
         :return: None
         """
         self.select_threshold()
@@ -369,7 +407,8 @@ class Game:
 
     def one_vs_machine(self) -> None:
         """
-        The starting point of one_vs_machine game mode
+        The starting point of one_vs_machine
+        game mode
         :return: None
         """
         self.select_threshold()
@@ -388,7 +427,8 @@ class Game:
 
     def begin(self) -> None:
         """
-        Selecting a game mode based on amount players
+        Selecting a game mode based
+        on amount players
         :return: None
         """
         if len(self.players) > 1:
@@ -402,8 +442,9 @@ class Game:
 
     def game_loop(self) -> None:
         """
-        The game loop contains all main methods that
-        are responsible to process the game
+        The game loop contains all
+        main methods that are responsible
+        to process the game
         :return: None
         """
         self.matchmaking()

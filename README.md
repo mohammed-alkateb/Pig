@@ -90,4 +90,6 @@ Regenerate a document file in HTML format
 ```
 
 
-## 🎮 Game Implementation
+## 🎮 Gane Intelligence
+
+We chose to implement two levels of automated enemy intelligence. The easy level is based on randomizing a number between 0 (Roll a die) and 1 (Hold). The hard level, on the other hand, uses the NumPy and Scikit-learn libraries. NumPy is used to load data from a file and return it as NumPy arrays. Scikit-learn is used to create a machine learning model for predicting the next dice roll value. In summary, in the hard level, the computer can predict the next dice roll value and make a decision based on whether to roll the dice or hold.

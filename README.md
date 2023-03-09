@@ -70,8 +70,10 @@ test run example
 This project is licensed under the terms of the MIT license.
 
 ## UMl
-Graphviz
-pyreverse
+```bash
+  pyreverse -o png -p yourpackage .
+```
+where the . can also be a single file.
 
 
 ## 🗎 Regenerate Documentation

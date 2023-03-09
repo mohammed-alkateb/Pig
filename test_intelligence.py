@@ -1,5 +1,4 @@
 """" Imports intelligence and random """
-import random
 
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor

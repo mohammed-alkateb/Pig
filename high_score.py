@@ -30,7 +30,8 @@ class High_score:
         :param high_score: high score
         :return: bool
         """
-        if not self.__high_score_list or high_score > max(self.__high_score_list):
+        if not self.__high_score_list or \
+                high_score > max(self.__high_score_list):
             self.__high_score_list.append(high_score)
             return True
         return False

@@ -39,7 +39,8 @@ class Intelligence:
         constructor with variables random_action, x, y,
         model, DATA_FILE, ai_level.
         Gets the data from the file and make the module train on them
-        :param ai_level: the level of machine's intelligence that the player wants to play against
+        :param ai_level: the level of machine's intelligence
+        that the player wants to play against
         :param data_file: the name of the data file
         """
         self.arr_x, self.arr_y = load_data(data_file)

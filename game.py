@@ -40,8 +40,12 @@ class Game:
         :return: None
         """
         self.players: List[Player] = []
-        self.high_score_list: List[High_score] = [High_score() for i in range(2)]
-        self.histograms: List[Histogram] = [Histogram() for i in range(2)]
+        self.high_score_list: \
+            List[High_score] = \
+            [High_score() for i in range(2)]
+        self.histograms: \
+            List[Histogram] = \
+            [Histogram() for i in range(2)]
         self.__intelligence = None
         self.ui = UI()
         self.threshold = 0
@@ -53,16 +57,20 @@ class Game:
 
     def matchmaking(self) -> None:
         """
-        Matchmaking is the method where every player enters his name
+        Matchmaking is the method where
+        every player enters his name
         to be added to the player list
         :return: None
         """
         while True:
-            action = int(input("How many players would like to play? (max 2)\n"))
+            action = int(input(
+                "How many players would like to play?"
+                " (max 2)\n"))
             if action in range(1, 3):
                 for i in range(action):
                     while True:
-                        name = str(input(f"Enter player {i + 1} name: ").lower())
+                        name = str(input(f"Enter player {i + 1}"
+                                         f" name: ").lower())
                         if name.isalpha():
                             player = Player(name)
                             self.players.append(player)
@@ -103,7 +111,8 @@ class Game:
         """
         Update the player information in the game log file.
 
-        :param update_name: A bool that indicates whether to update the player name or not.
+        :param update_name: A bool that indicates whether
+        to update the player name or not.
         :param current_name: The player's current name.
         :param new_name: The name the player wants to change to.
         :param high_score: The player's high score.
@@ -124,11 +133,13 @@ class Game:
 
             if current_name == name:
                 if update_name:
-                    lines[i] = f"{str(new_name)},{matches_played},{total_wins}," \
-                               f"{total_losses},{old_high_score}\n"
+                    lines[i] = f"{str(new_name)},{matches_played}," \
+                               f"{total_wins},{total_losses}," \
+                               f"{old_high_score}\n"
                 else:
                     if high_score > int(old_high_score):
-                        lines[i] = f"{name},{str(int(matches_played) + 1)}," \
+                        lines[i] = f"{name}," \
+                                   f"{str(int(matches_played) + 1)}," \
                                    f"{str(int(total_wins) + 1)}," \
                                    f"{total_losses},{high_score}\n"
                     else:
@@ -137,8 +148,9 @@ class Game:
                                    f"{total_losses},{old_high_score}\n"
                     print(lines[i], end="")
             elif loser_name == name and not update_name:
-                lines[i] = f"{name},{str(int(matches_played) + 1)},{total_wins}," \
-                           f"{str(int(total_losses) + 1)},{old_high_score}\n"
+                lines[i] = f"{name},{str(int(matches_played) + 1)}," \
+                           f"{total_wins},{str(int(total_losses) + 1)}," \
+                           f"{old_high_score}\n"
                 print(lines[i], end="")
         with open(self.GAME_LOG_FILE, 'w') as file:
             file.writelines(lines)
@@ -170,8 +182,10 @@ class Game:
 
     def detect_winner(self, player_index: int) -> None:
         """
-        Checks for winner and if it finds one the players results will be displayed
-        :param player_index: player object index in the players list
+        Checks for winner and if it finds one the
+        players results will be displayed
+        :param player_index: player object index
+        in the players list
         :return: None
         """
         winner = self.players[player_index]
@@ -179,12 +193,18 @@ class Game:
 
         if winner.get_score() >= self.threshold:
             print(f"The winner is {winner.name}")
-            self.high_score_list[player_index].add_high_score(winner.get_score())
-            print(f"Winner high score list: {self.high_score_list[player_index].get_high_scores()}")
-            self.update_player_info(False, winner.name, None, winner.get_score(), loser.name)
+            self.high_score_list[player_index].\
+                add_high_score(winner.get_score())
+            print(f"Winner high score list: "
+                  f"{self.high_score_list[player_index].get_high_scores()}")
+            self.update_player_info(False, winner.name,
+                                    None, winner.get_score(),
+                                    loser.name)
             self.exit_confirmation()
 
-    def check_cast(self, histogram: Histogram, player_index: int, dice_hand: Dice_hand) -> None:
+    def check_cast(self, histogram: Histogram,
+                   player_index: int,
+                   dice_hand: Dice_hand) -> None:
         """
         Write the new cast value in the data file
         which the AI module train on.
@@ -251,7 +271,9 @@ class Game:
             while True:
                 new_name = input("Enter the new name: ")
                 if new_name.isalpha():
-                    self.update_player_info(True, player.name, new_name.lower(), None, None)
+                    self.update_player_info(True, player.name,
+                                            new_name.lower(),
+                                            None, None)
                     break
                 else:
                     self.ui.only_alphabet_exception()
@@ -266,7 +288,8 @@ class Game:
     def turn_shift(self, player_index: int, dice_hand: Dice_hand) -> None:
         """
         The start point of player turn
-        :param player_index: player index in the players list
+        :param player_index: player index in
+        the players list
         :param dice_hand: dice hand object
         :return: None
         """
@@ -276,12 +299,13 @@ class Game:
         while self.turn_looping:
             while True:
                 player_action = input("1. Roll a die\n"
-                                          "2. Hold\n"
-                                          "3. Rename player\n"
-                                          "4. Display Histogram\n"
-                                          "5. Restart\n"
-                                          "6. Quit\n")
-                if player_action.isdigit() and int(player_action) in range(1, 7):
+                                      "2. Hold\n"
+                                      "3. Rename player\n"
+                                      "4. Display Histogram\n"
+                                      "5. Restart\n"
+                                      "6. Quit\n")
+                if player_action.isdigit() and \
+                        int(player_action) in range(1, 7):
                     break
                 else:
                     self.ui.only_digits_exception()

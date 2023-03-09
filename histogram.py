@@ -37,7 +37,7 @@ class Histogram:
         reset the histogram data
         :return: None
         """
-        self.__data.clear()
+        self.__data = [0] * 7
 
     def display(self):
         """

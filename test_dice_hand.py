@@ -25,6 +25,7 @@ def test_get_multiple_cast():
         cast = dice_hand.get_multiple_cast()
         assert cast in [1, 2, 3, 4, 5, 6]
 
+
 def test_reset_values():
     """
     This function creates a new Dice_hand
@@ -35,4 +36,3 @@ def test_reset_values():
     dice_hand = Dice_hand()
     dice_hand.reset_values()
     assert dice_hand.get_total_values() == 0
-

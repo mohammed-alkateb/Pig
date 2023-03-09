@@ -33,6 +33,7 @@ def test_reset():
     histogram.reset()
     assert len(histogram.get_data()) == 0
 
+
 def test_display():
     """
     Creates a new histogram, updates it with

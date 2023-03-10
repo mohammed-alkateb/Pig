@@ -60,6 +60,15 @@ To test code do the following
 test run example
 ![App Screenshot](https://user-images.githubusercontent.com/92877244/222927770-de694b2e-cea9-4561-84e3-bf2557fa3c3a.png)
 
+How to check coverage
+```bash
+  coverage report
+```
+```bash
+  coverage html
+```
+to get a visual report
+
 
 
 

@@ -35,3 +35,17 @@ def test_matchmaking():
         assert len(game.players) == 2
         assert game.players[0].name == 'player1'
         assert game.players[1].name == 'player2'
+
+
+def test_register_new_player():
+    game_log_file = "test_player_info.txt"
+    game = Game()
+
+    player = Player("Alice")
+    game.register_new_player(player)
+
+    # Verify that the game log file was updated with the new player
+    with open(game_log_file, 'r') as file:
+        lines = file.readlines()
+    assert len(lines) == 1
+    assert lines[0].strip() == "Alice,0,0,0,0"

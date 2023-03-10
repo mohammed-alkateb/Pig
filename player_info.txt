@@ -38,3 +38,10 @@ John,2,1,1,100
 shu,0,0,0,0
 d,0,0,0,0
 mohamed,0,0,0,0
+Alice,0,0,0,0
+Alice,0,0,0,0
+Alice,0,0,0,0
+Alice,0,0,0,0
+Alice,0,0,0,0
+Alice,0,0,0,0
+Alice,0,0,0,0

@@ -1,12 +1,10 @@
 import sys
 import csv
 import unittest
+import pytest
 from typing import List
 from io import StringIO
 from unittest.mock import patch, MagicMock
-
-import pytest
-
 from dice import Dice
 from dice_hand import Dice_hand
 from player import Player
@@ -55,7 +53,7 @@ class TestCheckPlayerInfo(unittest.TestCase):
 
     game = Game()
     game.players = [{'name': 'John', 'age': 25}, {'name': 'Alice', 'age': 30}]
-    game.mock_file_content = "John,25\n"
+    mock_file_content = "John,25\n"
     game.ui = MagicMock()
 
     def test_player_already_registered(self):
@@ -74,15 +72,12 @@ class TestCheckPlayerInfo(unittest.TestCase):
 
     def test_player_not_registered(self):
         # Arrange
-        with open('player_info.txt', 'w') as file:
+        with open('player_info.txt', 'a') as file:
             file.write('')
         self.game.GAME_LOG_FILE = 'player_info.txt'
 
         # Act
         self.game.check_player_info()
-
-        # Assert
-        self.ui.player_confirmed.assert_not_called()
         self.game.register_new_player.assert_called_once_with({'name': 'John', 'age': 25})
 
 

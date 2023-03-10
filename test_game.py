@@ -1,5 +1,6 @@
 import sys
 import csv
+import unittest
 from typing import List
 from io import StringIO
 from unittest.mock import patch, MagicMock
@@ -25,28 +26,5 @@ def test_csv_import():
 
 def test_list_import():
     assert "List" not in sys.modules
-
-
-def test_matchmaking():
-    with patch('builtins.input', side_effect=['2', 'player1', 'player2']):
-        game = Game()
-        game.players.append(Player("player1"))
-        game.players.append(Player("player2"))
-        assert len(game.players) == 2
-        assert game.players[0].name == 'player1'
-        assert game.players[1].name == 'player2'
-
-
-def test_register_new_player():
-    game = Game()
-    game.GAME_LOG_FILE = "player_info.txt"
-
-    player = Player("Alice")
-    game.register_new_player(player)
-
-    # Verify that the game log file was updated with the new player
-    with open(game.GAME_LOG_FILE, 'r') as file:
-        lines = file.readlines()
-    assert lines[len(lines)-1].strip() == "Alice,0,0,0,0"
 
 

@@ -1,5 +1,6 @@
 import sys
 import csv
+import unittest
 from typing import List
 from io import StringIO
 from unittest.mock import patch, MagicMock
@@ -48,4 +49,62 @@ def test_register_new_player():
     with open(game.GAME_LOG_FILE, 'r') as file:
         lines = file.readlines()
     assert lines[len(lines)-1].strip() == "Alice,0,0,0,0"
+
+
+class TestCheckPlayerInfo(unittest.TestCase):
+
+    game = Game()
+    game.players = [{'name': 'John', 'age': 25}, {'name': 'Alice', 'age': 30}]
+    game.mock_file_content = "John,25\n"
+    game.ui = MagicMock()
+
+    def test_player_already_registered(self):
+        # Arrange
+        with open('player_info.txt', 'w') as file:
+            file.write(self.mock_file_content)
+        self.game.GAME_LOG_FILE = 'player_info.txt'
+
+        # Act
+        self.game.check_player_info()
+
+        # Assert
+        self.ui.player_confirmed.assert_called_once_with('John')
+        self.ui.player_confirmed.assert_not_called_with('Alice')
+        self.game.register_new_player.assert_not_called()
+
+    def test_player_not_registered(self):
+        # Arrange
+        with open('player_info.txt', 'w') as file:
+            file.write('')
+        self.game.GAME_LOG_FILE = 'player_info.txt'
+
+        # Act
+        self.game.check_player_info()
+
+        # Assert
+        self.ui.player_confirmed.assert_not_called()
+        self.game.register_new_player.assert_called_once_with({'name': 'John', 'age': 25})
+
+
+def test_game_loop_methods_are_called(mocker):
+    """
+    Test that the game loop calls the necessary methods.
+    """
+    # Create a mock object for the Game class
+    game = Game()
+
+    # Create mock objects for the methods that the game loop should call
+    matchmaking_mock = mocker.patch.object(game, 'matchmaking')
+    check_player_info_mock = mocker.patch.object(game, 'check_player_info')
+    display_game_rules_mock = mocker.patch.object(game.ui, 'display_game_rules')
+    begin_mock = mocker.patch.object(game, 'begin')
+
+    # Call the game loop method
+    game.game_loop()
+
+    # Check that the necessary methods were called
+    matchmaking_mock.assert_called_once()
+    check_player_info_mock.assert_called_once()
+    display_game_rules_mock.assert_called_once()
+    begin_mock.assert_called_once()
 

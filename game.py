@@ -21,7 +21,6 @@ def progress_bar() -> None:
     :return: None
     """
     for i in track(range(10), description="Processing..."):
-        print(f"working {i}")
         time.sleep(0.5)
     print()
 
@@ -385,8 +384,13 @@ class Game:
         while True:
             self.threshold = input("Assign a threshold: ")
             if self.threshold.isdigit():
-                self.threshold = int(self.threshold)
-                break
+                if self.threshold > 0:
+                    self.threshold = int(self.threshold)
+                    break
+                else:
+                    self.ui.out_of_range_exception()
+            else:
+                self.ui.only_digits_exception()
 
     def one_vs_one(self) -> None:
         """
@@ -436,9 +440,12 @@ class Game:
         elif len(self.players) == 1:
             while True:
                 level = int(input("Easy level: 0\nHard level: 1\n"))
-                self.__intelligence = Intelligence(level, self.DATA_FILE)
-                self.one_vs_machine()
-                break
+                if level in range(1):
+                    self.__intelligence = Intelligence(level, self.DATA_FILE)
+                    self.one_vs_machine()
+                    break
+                else:
+                    self.ui.out_of_range_exception()
 
     def game_loop(self) -> None:
         """

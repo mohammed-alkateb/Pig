@@ -21,8 +21,7 @@ class High_score:
         highscore list getter
         :return: int
         """
-        for score in self.__high_score_list:
-            return score
+        return self.__high_score_list
 
     def add_high_score(self, high_score: int) -> bool:
         """

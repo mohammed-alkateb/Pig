@@ -26,4 +26,4 @@ def test_get_high_scores():
     high_scores = High_score()
     high_scores.add_high_score(90)
     high_scores.add_high_score(95)
-    assert high_scores.get_high_scores() == 90
+    assert high_scores.get_high_scores() == [90, 95]

@@ -1,6 +1,8 @@
 import sys
 import csv
 import unittest
+from unittest import TestCase, mock
+
 import pytest
 from typing import List
 from io import StringIO
@@ -48,37 +50,25 @@ def test_register_new_player():
         lines = file.readlines()
     assert lines[len(lines)-1].strip() == "Alice,0,0,0,0"
 
-"""
-class TestCheckPlayerInfo(unittest.TestCase):
 
-    game = Game()
-    game.players = [{'name': 'John', 'age': 25}, {'name': 'Alice', 'age': 30}]
-    mock_file_content = "John,25\n"
-    game.ui = MagicMock()
+class TestGame(TestCase):
+    @mock.patch('builtins.open', new_callable=mock.mock_open)
+    def test_check_player_info(self, mock_file):
+        # Set up a mock file with a single line containing a player's name
+        mock_file.return_value.__enter__.return_value.readline.return_value = 'Alice, 100\n'
 
-    def test_player_already_registered(self):
-        # Arrange
-        with open('player_info.txt', 'w') as file:
-            file.write(self.mock_file_content)
-        self.game.GAME_LOG_FILE = 'player_info.txt'
+        # Create a game instance and a player instance
+        game = Game()
+        player = Player('Bob')
 
-        # Act
-        self.game.check_player_info()
+        # Add the player to the game's list of players
+        game.players.append(player)
 
-        # Assert
-        self.ui.player_confirmed.assert_called_once_with('John')
-        self.ui.player_confirmed.assert_not_called_with('Alice')
-        self.game.register_new_player.assert_not_called()
+        # Call the method under test
+        game.check_player_info()
 
-    def test_player_not_registered(self):
-        # Arrange
-        with open('player_info.txt', 'a') as file:
-            file.write('')
-        self.game.GAME_LOG_FILE = 'player_info.txt'
-
-        # Act
-        self.game.check_player_info()
-        self.game.register_new_player.assert_called_once_with({'name': 'John', 'age': 25})"""
+        self.assertIn(player, game.players)
+        mock_file.assert_called_once_with(game.GAME_LOG_FILE, 'r')
 
 
 def test_game_loop_methods_are_called(mocker):

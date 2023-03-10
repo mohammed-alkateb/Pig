@@ -75,6 +75,8 @@ class Game:
                             self.players.append(player)
                             break
                 break
+            else:
+                action -= 1
 
     def register_new_player(self, player: Player) -> None:
         """
@@ -384,7 +386,7 @@ class Game:
         while True:
             self.threshold = input("Assign a threshold: ")
             if self.threshold.isdigit():
-                if self.threshold > 0:
+                if int(self.threshold) > 0:
                     self.threshold = int(self.threshold)
                     break
                 else:
@@ -440,7 +442,7 @@ class Game:
         elif len(self.players) == 1:
             while True:
                 level = int(input("Easy level: 0\nHard level: 1\n"))
-                if level in range(1):
+                if level in range(0, 2):
                     self.__intelligence = Intelligence(level, self.DATA_FILE)
                     self.one_vs_machine()
                     break

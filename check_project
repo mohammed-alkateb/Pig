@@ -1,0 +1,4 @@
+Does the project work when using bad inputs?
+Does the project pass for code style and issues when using pylint?
+Does the project fulfill the overall requirements?
+Can you regenerate the documentation for the project?

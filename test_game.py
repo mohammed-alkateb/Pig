@@ -48,3 +48,4 @@ def test_register_new_player():
     with open(game.GAME_LOG_FILE, 'r') as file:
         lines = file.readlines()
     assert lines[len(lines)-1].strip() == "Alice,0,0,0,0"
+

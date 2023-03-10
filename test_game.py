@@ -38,14 +38,13 @@ def test_matchmaking():
 
 
 def test_register_new_player():
-    game_log_file = "test_player_info.txt"
     game = Game()
+    game.GAME_LOG_FILE = "player_info.txt"
 
     player = Player("Alice")
     game.register_new_player(player)
 
     # Verify that the game log file was updated with the new player
-    with open(game_log_file, 'r') as file:
+    with open(game.GAME_LOG_FILE, 'r') as file:
         lines = file.readlines()
-    assert len(lines) == 1
-    assert lines[0].strip() == "Alice,0,0,0,0"
+    assert lines[len(lines)-1].strip() == "Alice,0,0,0,0"

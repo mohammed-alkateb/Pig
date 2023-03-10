@@ -49,3 +49,4 @@ def test_register_new_player():
         lines = file.readlines()
     assert lines[len(lines)-1].strip() == "Alice,0,0,0,0"
 
+

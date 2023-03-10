@@ -63,11 +63,6 @@ test run example
 
 
 
-## 💾 License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
-This project is licensed under the terms of the MIT license.
 
 ## UMl
 ```bash
@@ -112,3 +107,9 @@ We chose to implement two levels of automated enemy intelligence. The easy level
   x_test = np.random.randint(1, 7, size=(1, 1))
   predicted_value = round(self.model.predict(x_test)[0])
 ```
+
+## 💾 License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+This project is licensed under the terms of the MIT license.

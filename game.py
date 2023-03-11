@@ -183,8 +183,8 @@ class Game:
         wants to exit the game
         :return: None
         """
-        play_again = input("Do you want to play again? [YES/NO]\n").lower()
         while True:
+            play_again = input("Do you want to play again? [YES/NO]\n").lower()
             if play_again == "yes":
                 self.restart_match()
                 break

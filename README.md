@@ -3,8 +3,8 @@ A simple dice game with two players. Each player repeatedly rolls a die until ei
 
 
 ## 👨‍🎓 Authors
-- [@shuaybw](https://www.github.com/shuaybw)
 - [@mohammed-alkateb](https://www.github.com/mohammed-alkateb)
+- [@shuaybw](https://www.github.com/shuaybw)
 
 
 ## ⚖️ Game rules
